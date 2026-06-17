@@ -1,0 +1,42 @@
+[package]
+name = "kasse"
+description = "A linkable, browser-based Lightning point-of-sale terminal"
+edition = "2024"
+license = "MIT"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "kasse"
+path = "src/lib.rs"
+
+[dependencies]
+# Payment logic reused from the cashup Rust core
+fedimint-lnurl = { git = "https://github.com/fedimint/fedimint", rev = "8f90a6d6bc5f8e657d3e300768825de075d7222f" }
+lightning-invoice = { version = "0.33.2", features = ["serde"] }
+bitcoin_hashes = "0.14.0"
+reqwest = { version = "0.12.23", features = ["json"], default-features = false }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.142"
+
+# Web/WASM stack reused from the fedimint-walletv2-recoverytool
+leptos = { version = "0.7.8", default-features = false, features = ["csr"] }
+gloo-timers = { version = "0.3.0", features = ["futures"] }
+wasm-bindgen = "=0.2.100"
+wasm-bindgen-futures = "0.4.42"
+web-sys = { version = "0.3.77", features = [
+    "console",
+    "Window",
+    "Location",
+    "UrlSearchParams",
+    "History",
+    "Document",
+    "Element",
+] }
+js-sys = "0.3.77"
+console_error_panic_hook = "0.1.7"
+getrandom_0_2 = { package = "getrandom", version = "0.2", features = ["js"] }
+getrandom = { version = "0.3.3", features = ["wasm_js"] }
+
+# QR rendering (svg renderer; default `image`/PNG feature disabled)
+qrcode = { version = "0.14.1", default-features = false, features = ["svg"] }
